@@ -36,8 +36,8 @@ contract CourseMarketplace {
     modifier onlyOwner() {
         if (msg.sender != getContractOwner()) {
             revert OnlyOwner();
-            _;
         }
+        _;
     }
     
     function purchaseCourse(bytes16 courseId,bytes32 proof) external payable {
