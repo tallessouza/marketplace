@@ -16,7 +16,7 @@ export default function Card({course, disabled, Footer}) {
             alt={course.title}
           />
         </div>
-        <div className="p-8 pb-4 flex-2">
+        <div className="pl-8 pb-4 flex-2">
           <div
             className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
             {course.type}
