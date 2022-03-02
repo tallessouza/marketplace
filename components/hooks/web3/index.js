@@ -1,40 +1,41 @@
 import { useHooks } from "@components/providers/web3"
-const enhanceHook = (swrResponse) => {
-    return {
-        ...swrResponse,
-        hasInitialResponse: swrResponse.data || swrResponse.error
-    }
+
+const enhanceHook = swrRes => {
+  return {
+    ...swrRes,
+    hasInitialResponse: swrRes.data || swrRes.error
+  }
 }
 
 export const useNetwork = () => {
-    const swrRes = enhanceHook(useHooks(hooks => hooks.useNetwork)())
-    return {
-        network : swrRes
-    }
+  const swrRes = enhanceHook(useHooks(hooks => hooks.useNetwork)())
+  return {
+    network: swrRes
+  }
 }
 
 export const useAccount = () => {
-    const swrRes = enhanceHook(useHooks(hooks => hooks.useAccount)())
-    return {
-        account : swrRes
-    }
+  const swrRes = enhanceHook(useHooks(hooks => hooks.useAccount)())
+  return {
+    account: swrRes
+  }
 }
 
-export const useOwnedCourses = () => {
-    const res = useHooks(hooks => hooks.useOwnedCourses)()
+export const useOwnedCourses = (...args) => {
+  const swrRes = useHooks(hooks => hooks.useOwnedCourses)(...args)
 
-    return {
-        ownedCourses: {data: res}
-    }
+  return {
+    ownedCourses: swrRes
+  }
 }
 
 export const useWalletInfo = () => {
-    const { account } = useAccount()
-    const { network } = useNetwork()
+  const { account } = useAccount()
+  const { network } = useNetwork()
 
-    return {
-        account,
-        network,
-        canPurchaseCourse: !!(account.data && network.isSupported)
-    }
+  return {
+    account,
+    network,
+    canPurchaseCourse: !!(account.data && network.isSupported)
+  }
 }
