@@ -1,19 +1,19 @@
 const { createContext, useContext, useEffect, useState, useMemo } = require("react");
 
 import detectEthereumProvider from "@metamask/detect-provider";
-import { loadContract } from "@utils/loadcontract";
+import { loadContract } from "@utils/loadContract";
 import Web3 from "web3";
 import { setupHooks } from "./hooks/setupHooks";
 
 const Web3Context = createContext(null)
 
-const createWeb3State = ({web3, contract, provider, isLoading}) => {
-  return{
+const createWeb3State = ({web3, provider, contract, isLoading}) => {
+  return {
     web3,
     provider,
     contract,
     isLoading,
-    hooks: setupHooks({web3, contract, provider})
+    hooks: setupHooks({web3, provider, contract})
   }
 }
 
@@ -21,8 +21,8 @@ export default function Web3Provider({children}) {
   const [web3Api, setWeb3Api] = useState(
     createWeb3State({
       web3: null,
-      contract: null,
       provider: null,
+      contract: null,
       isLoading: true
     })
   )
@@ -34,11 +34,12 @@ export default function Web3Provider({children}) {
       if (provider) {
         const web3 = new Web3(provider)
         const contract = await loadContract("CourseMarketplace", web3)
+
         setWeb3Api(
           createWeb3State({
-            web3: null,
-            contract: null,
-            provider: null,
+            web3,
+            provider,
+            contract,
             isLoading: false
           })
         )
@@ -52,11 +53,11 @@ export default function Web3Provider({children}) {
   }, [])
 
   const _web3Api = useMemo(() => {
-      const { web3, provider, isLoading } = web3Api
+    const { web3, provider, isLoading } = web3Api
     return {
       ...web3Api,
-      requireInstall: !isLoading && !web3,
-      connect: web3Api.provider ?
+      requireInstall: !isLoading && !web3 ,
+      connect: provider ?
         async () => {
           try {
             await provider.request({method: "eth_requestAccounts"})
@@ -76,10 +77,10 @@ export default function Web3Provider({children}) {
 }
 
 export function useWeb3() {
-    return useContext(Web3Context)
+  return useContext(Web3Context)
 }
 
 export function useHooks(cb) {
-    const { hooks } = useWeb3()
-    return cb(hooks)
+  const { hooks } = useWeb3()
+  return cb(hooks)
 }
