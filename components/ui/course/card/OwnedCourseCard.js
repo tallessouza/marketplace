@@ -1,20 +1,19 @@
 import Image from "next/image"
+
 export default function OwnedCourseCard({children, course}) {
 
   return (
     <div className="bg-white border shadow overflow-hidden sm:rounded-lg mb-3">
       <div className="flex">
         <div className="flex-1">
-          <div className="next-image-wrapper">
             <Image
               className="object-cover"
-              alt=""
               src={course.coverImage}
-              width="37"
+              width="45"
               height="45"
               layout="responsive"
+              alt=""
             />
-          </div>
         </div>
         <div className="flex-4">
           <div className="px-4 py-5 sm:px-6">

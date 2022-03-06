@@ -1,17 +1,19 @@
 import { useWeb3 } from "@components/providers"
-import { ActiveLink , Button } from "@components/ui/common"
+import Link from "next/link"
+import { ActiveLink, Button } from "@components/ui/common"
 import { useAccount } from "@components/hooks/web3"
 import { useRouter } from "next/router"
 
 export default function Navbar() {
   const { connect, isLoading, requireInstall } = useWeb3()
   const { account } = useAccount()
+  const { pathname } = useRouter()
 
   return (
     <section>
       <div className="relative pt-6 px-4 sm:px-6 lg:px-8">
         <nav className="relative" aria-label="Global">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col xs:flex-row justify-between items-center">
             <div>
               <ActiveLink href="/" >
                 <a
@@ -32,10 +34,10 @@ export default function Navbar() {
                 </a>
               </ActiveLink>
             </div>
-            <div>
+            <div className="text-center">
               <ActiveLink href="/wishlist" >
                 <a
-                  className="font-medium mr-8 text-gray-500 hover:text-gray-900">
+                  className="font-medium sm:mr-8 mr-1 text-gray-500 hover:text-gray-900">
                   Wishlist
                 </a>
               </ActiveLink>
@@ -49,17 +51,17 @@ export default function Navbar() {
                 <Button
                   hoverable={false}
                   className="cursor-default">
-                  Hi {account.isAdmin && "Admin"} {account.data}
+                 Hi {account.isAdmin && "Admin"} {account.data}
                 </Button> :
                 requireInstall ?
                 <Button
-                onClick={() => window.open("https://metamask.io/download.html", "_blank")}>
-                Install Metamask
-                 </Button>:
+                  onClick={() => window.open("https://metamask.io/download.html", "_blank")}>
+                  Install Metamask
+                </Button> :
                 <Button
                   onClick={connect}>
                   Connect
-                </Button>   
+                </Button>
               }
             </div>
           </div>

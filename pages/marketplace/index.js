@@ -1,4 +1,3 @@
-
 import { CourseCard, CourseList } from "@components/ui/course"
 import { BaseLayout } from "@components/ui/layout"
 import { getAllCourses } from "@content/courses/fetcher"
@@ -11,8 +10,8 @@ import { useWeb3 } from "@components/providers"
 
 export default function Marketplace({courses}) {
   const { web3, contract } = useWeb3()
-  const [selectedCourse, setSelectedCourse] = useState(null)
   const { canPurchaseCourse, account } = useWalletInfo()
+  const [selectedCourse, setSelectedCourse] = useState(null)
 
   const purchaseCourse = async order => {
     const hexCourseId = web3.utils.utf8ToHex(selectedCourse.id)
@@ -41,9 +40,7 @@ export default function Marketplace({courses}) {
 
   return (
     <>
-      <div className="py-4">
-       <MarketHeader/>
-      </div>
+      <MarketHeader />
       <CourseList
         courses={courses}
       >
