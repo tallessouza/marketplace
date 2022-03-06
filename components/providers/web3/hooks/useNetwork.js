@@ -9,7 +9,7 @@ const NETWORKS = {
   42: "Kovan Test Network",
   56: "Binance Smart Chain",
   1337: "Ganache",
-  137: "Polygon"
+  137: "Polygon Network"
 }
 
 const targetNetwork = NETWORKS[process.env.NEXT_PUBLIC_TARGET_CHAIN_ID]
@@ -29,11 +29,13 @@ export const handler = (web3, provider) => () => {
   )
 
   useEffect(() => {
-    provider &&
-    provider.on("chainChanged", chainId => {
-      mutate(NETWORKS[parseInt(chainId, 16)])
-    })
-  }, [data])
+    const mutator = chainId => mutate(NETWORKS[parseInt(chainId, 16)])
+    provider?.on("chainChanged",mutator)
+    
+    return () => {
+      provider?.removeListener("chainChanged", mutator)
+    }
+  }, [provider])
 
   return {
     data,
