@@ -10,13 +10,13 @@ import { BaseLayout } from "@components/ui/layout";
 import { getAllCourses } from "@content/courses/fetcher";
 
 export default function Course({course}) {
-  const { isLoading } = useWeb3()
   const { account } = useAccount()
+  const { isLoading } = useWeb3()
   const { ownedCourse } = useOwnedCourse(course, account.data)
   const courseState = ownedCourse.data?.state
-
+  debugger
   const isLocked =
-    !courseState === "locked" ||
+    !courseState ||
     courseState === "purchased" ||
     courseState === "deactivated"
 
