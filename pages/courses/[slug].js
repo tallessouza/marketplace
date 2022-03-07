@@ -13,8 +13,7 @@ export default function Course({course}) {
   const { isLoading } = useWeb3()
   const { account } = useAccount()
   const { ownedCourse } = useOwnedCourse(course, account.data)
-  // const courseState = ownedCourse.data?.state
-  const courseState = "activated"
+  const courseState = ownedCourse.data?.state
 
   const isLocked =
     !courseState === "locked" ||
