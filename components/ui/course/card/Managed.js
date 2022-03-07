@@ -20,7 +20,7 @@ export default function ManagedCourseCard({children, course}) {
                 <Item
                     key={key}
                     className={`${i % 2 ? "bg-gray-50" : "bg-white"}`}
-                    title={key}
+                    title={key[0].toLocaleUpperCase() + key.slice(1)}
                     value={course[key]}
                 />
             )}
