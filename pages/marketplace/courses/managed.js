@@ -1,4 +1,3 @@
-
 import { useAccount, useManagedCourses } from "@components/hooks/web3";
 import { useWeb3 } from "@components/providers";
 import { Button, Message } from "@components/ui/common";
@@ -7,9 +6,8 @@ import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
 import { useState } from "react";
 
-export default function ManageCourses() {
-
-  const [email, setEmail] = useState("")
+export default function ManagedCourses() {
+  const [ email, setEmail ] = useState("")
   const [ proofedOwnership, setProofedOwnership ] = useState({})
   const { web3 } = useWeb3()
   const { account } = useAccount()
@@ -17,7 +15,7 @@ export default function ManageCourses() {
 
   const verifyCourse = (email, {hash, proof}) => {
     const emailHash = web3.utils.sha3(email)
-    const proofToCheck = web3.utils?.soliditySha3(
+    const proofToCheck = web3.utils.soliditySha3(
       { type: "bytes32", value: emailHash },
       { type: "bytes32", value: hash }
     )
@@ -36,8 +34,8 @@ export default function ManageCourses() {
       <MarketHeader />
       <CourseFilter />
       <section className="grid grid-cols-1">
-        { managedCourses.data?.map( course =>
-          <ManagedCourseCard 
+        { managedCourses.data?.map(course =>
+          <ManagedCourseCard
             key={course.ownedCourseId}
             course={course}
           >
@@ -50,41 +48,36 @@ export default function ManageCourses() {
                 id="account"
                 className="w-96 focus:ring-indigo-500 shadow-md focus:border-indigo-500 block pl-7 p-4 sm:text-sm border-gray-300 rounded-md"
                 placeholder="0x2341ab..." />
-              <Button onChange
-                onCLick={(
+              <Button
+                onClick={() => {
                   verifyCourse(email, {
                     hash: course.hash,
                     proof: course.proof
                   })
-                )}
+                }}
               >
                 Verify
               </Button>
             </div>
             { proofedOwnership[course.hash] &&
-              <div>
+              <div className="mt-2">
                 <Message>
-                  Verified
+                  Verified!
                 </Message>
               </div>
             }
             { proofedOwnership[course.hash] === false &&
-              <div>
+              <div className="mt-2">
                 <Message type="danger">
-                  Wrong Proof
+                  Wrong Proof!
                 </Message>
               </div>
             }
           </ManagedCourseCard>
-        )
-
-        }
-        {/* <OwnedCourseCard>
-          
-        </OwnedCourseCard> */}
+        )}
       </section>
     </>
   )
 }
 
-ManageCourses.Layout = BaseLayout
+ManagedCourses.Layout = BaseLayout
