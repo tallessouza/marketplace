@@ -14,6 +14,7 @@ export default function Card({course, disabled, Footer}) {
             width="200"
             height="230"
             alt={course.title}
+            priority
           />
         </div>
         <div className="p-8 pb-4 flex-2">
