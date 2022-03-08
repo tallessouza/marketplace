@@ -33,7 +33,7 @@ const VerificationInput = ({onVerify}) => {
 export default function ManagedCourses() {
   const [ proofedOwnership, setProofedOwnership ] = useState({})
   const { web3 } = useWeb3()
-  const  account  = useAdmin({redirectTo: "/marketplace"})
+  const { account } = useAdmin({redirectTo: "/marketplace"})
   const { managedCourses } = useManagedCourses(account)
 
   const verifyCourse = (email, {hash, proof}) => {
@@ -54,6 +54,10 @@ export default function ManagedCourses() {
       })
   }
 
+  if (!account.isAdmin) {
+    return null
+  }
+
   return (
     <>
       <MarketHeader />
@@ -67,12 +71,11 @@ export default function ManagedCourses() {
             <VerificationInput
               onVerify={email => {
                 verifyCourse(email, {
-                  hash: course.hash, 
+                  hash: course.hash,
                   proof: course.proof
                 })
               }}
             />
-
             { proofedOwnership[course.hash] &&
               <div className="mt-2">
                 <Message>

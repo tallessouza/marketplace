@@ -43,15 +43,16 @@ export const useAdmin = ({redirectTo}) => {
   const router = useRouter()
 
   useEffect(() => {
-    if((
-      requireInstall 
-      || account.hasInitialResponse 
-      && !account.isAdmin)
-      || account.isEmpty
-    ) {
+    if ((
+      requireInstall ||
+      account.hasInitialResponse && !account.isAdmin) ||
+      account.isEmpty) {
+
       router.push(redirectTo)
     }
-  })
+  }, [account])
+
+  return { account }
 }
 
 export const useOwnedCourses = (...args) => {
