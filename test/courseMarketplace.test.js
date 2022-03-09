@@ -67,4 +67,32 @@ contract("CourseMarketplace", accounts => {
             assert.equal(course.state, expectedState, "Course should be activated")
         })
     })
+    describe("Transfer ownership", () => {
+        
+        let currentOwner = null 
+        before( async () => {
+            currentOwner = await _contract.getContractOwner()
+        })
+
+        it("should return deployer address", async () => {
+            assert.equal(contractOwner,currentOwner, "Owner isn't the passed")
+        })
+        
+        it("should not transfer ownership with non-owner sending TX", async () => {
+            await catchRevert(_contract.transferOwnership(accounts[3], {from: accounts[4]}))
+        })
+
+        it("should transfer ownership with owner sending TX", async () => {
+            await _contract.transferOwnership(accounts[2], {from: currentOwner})
+            const owner = await _contract.getContractOwner()
+            assert.equal(owner,accounts[2], "Transfer has failed")
+        })
+
+        it("should transfer ownership to first owner", async () => {
+            await _contract.transferOwnership(contractOwner, {from: accounts[2]})
+            const owner = await _contract.getContractOwner()
+            assert.equal(owner,contractOwner, "Transfer has failed")
+        })
+        
+    })
 })
