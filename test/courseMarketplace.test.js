@@ -2,14 +2,14 @@ const CourseMarketplace = artifacts.require("CourseMarketplace")
 
 contract("CourseMarketplace", accounts => {
     
-    const courseId = "0x00000000000000000000000000003130";
-    const proof = "0x0000000000000000000000000000313000000000000000000000000000003130";
-    const value = "900000000";
+    const courseId = "0x00000000000000000000000000003130"
+    const proof = "0x0000000000000000000000000000313000000000000000000000000000003130"
+    const value = "900000000"
 
     let _contract = null
     let contractOwner = null
     let buyer = null
-
+    let courseHash = null
     before(async () => {
         _contract =await CourseMarketplace.deployed()
         contractOwner = accounts[0]
@@ -18,7 +18,7 @@ contract("CourseMarketplace", accounts => {
     })
 
     describe("Purchase the new course", () => {
-        let courseHash
+        
         before( async () => {
             await _contract.purchaseCourse(courseId, proof, {
                 from: buyer,
@@ -48,6 +48,19 @@ contract("CourseMarketplace", accounts => {
             assert.equal(course.proof, proof, `Course proof should be ${proof}`)
             assert.equal(course.owner, buyer, `Course buyer should be ${buyer}`)
             assert.equal(course.state, expectedState, `Course index should be ${expectedState}`)
+        })
+    })
+
+    describe("Activate the purchased course", () => {
+        before(async () => {
+            await _contract.activateCourse(courseHash, {from: contractOwner})
+        })
+
+        it("should have state of activated", async () => {
+            const course = await _contract.getCourseByHash(courseHash)
+            const expectedState = 1
+
+            assert.equal(course.state, expectedState, "Course should be activated")
         })
     })
 })
