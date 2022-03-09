@@ -28,6 +28,13 @@ contract("CourseMarketplace", accounts => {
             })
         })
 
+        it("should not allowed to purchase twice the same course", async () => {
+            await catchRevert(_contract.purchaseCourse(courseId, proof, {
+                from: buyer,
+                value
+            }))
+        })
+
         it("should get the purchased course hash by index", async () => {
             const index = 0
             courseHash = await _contract.getCourseHashAtIndex(index)
