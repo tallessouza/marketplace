@@ -33,7 +33,10 @@ contract CourseMarketplace {
   }
 
   /// Course has already purchased!
-  error CourseHasOwner();
+  error CourseHasOwner(); 
+
+  /// Sender is not course owner!
+  error SenderIsNotCourseOwner();
 
   /// Only owner can execute this function!
   error OnlyOwner();
@@ -74,6 +77,26 @@ contract CourseMarketplace {
       owner: msg.sender,
       state: State.Purchased
     });
+  }
+
+  function repurchaseCourse(bytes32 courseHash) external payable {
+
+    if(!isCourseCreated(courseHash)){
+      revert CourseIsNotCreated();
+    }
+
+    if (!hasCourseOwnership(courseHash)) {
+      revert SenderIsNotCourseOwner();
+    }
+
+    Course storage course = ownedCourses[courseHash];
+
+    if (course.state != State.Deactivated) {
+      revert InvalidState();
+    }
+
+    course.state = State.Purchased;
+    course.price = msg.value;
   }
 
   function activateCourse(bytes32 courseHash) external onlyOwner {
