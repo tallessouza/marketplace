@@ -1,9 +1,9 @@
 import { useState } from "react"
 
 const TYPES = {
-  success: "green",
+  danger: "red",
   warning: "yellow",
-  danger: "red"
+  success: "green",
 }
 
 
