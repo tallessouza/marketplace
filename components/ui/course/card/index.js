@@ -15,9 +15,10 @@ export default function Card({course, disabled, Footer, state}) {
             width="200"
             height="230"
             alt={course.title}
+            priority
           />
         </div>
-        <div className="p-8 pb-4 flex-2">
+        <div className=" flex-2">
           <div className="flex items-center">
             <div
               className="uppercase mr-2 tracking-wide text-sm text-indigo-500 font-semibold">
