@@ -91,7 +91,7 @@ export default function Marketplace({courses}) {
                         disabled={false}
                         size="sm"
                         variant="white">
-                        Yours &#10004;
+                        Yours ✔
                       </Button>
                       { owned.state === "deactivated" &&
                         <div className="ml-1">
