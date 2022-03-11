@@ -33,7 +33,7 @@ export default function Card({course, disabled, Footer}) {
             {course.description.substring(0, 70)}...
           </p>
           { Footer &&
-            <Footer />
+            <Footer/>
           }
         </div>
       </div>
