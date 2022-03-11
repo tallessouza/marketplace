@@ -87,30 +87,23 @@ export default function Marketplace({courses}) {
                     variant="green">
                     Owned
                   </Button>
-                  { owned.state ==="activated" &&
-                    <Message
-                      size="sm"
-                      type="success"
-                    >
-                      Activated
-                    </Message>
-                  }
-                  { owned.state ==="deactivated" &&
-                    <Message
-                      size="sm"
-                      type="danger"
-                    >
-                      Deactivated
-                    </Message>
-                  }
-                  { owned.state ==="purchased" &&
-                    <Message
-                      size="sm"
-                      type="warning"
-                    >
-                      Waiting for Activation
-                    </Message>
-                  }
+                  <div className="mt-1">
+                    { owned.state === "activated" &&
+                      <Message size="sm">
+                        Activated
+                      </Message>
+                    }
+                    { owned.state === "deactivated" &&
+                      <Message type="danger" size="sm">
+                        Deactivated
+                      </Message>
+                    }
+                    { owned.state === "purchased" &&
+                      <Message type="warning" size="sm">
+                        Waiting for Activation
+                      </Message>
+                    }
+                  </div>
                 </>
               )
             }
