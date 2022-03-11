@@ -1,20 +1,21 @@
-import { useEffect } from "react"
-import useSWR from "swr"
+import { useEffect } from 'react'
+import useSWR from 'swr'
 
 const adminAddresses = {
-  "0x64de442eebcb8070557245c878281ac5dcda14bdd9c87ca9b60a7a2e47c9453d": true
+  '0x64de442eebcb8070557245c878281ac5dcda14bdd9c87ca9b60a7a2e47c9453d': true
 }
 
 export const handler = (web3, provider) => () => {
-
-  const { data, mutate, ...rest } = useSWR(() =>
-    web3 ? "web3/accounts" : null,
+  const { data, mutate, ...rest } = useSWR(
+    () => (web3 ? 'web3/accounts' : null),
     async () => {
       const accounts = await web3.eth.getAccounts()
       const account = accounts[0]
 
       if (!account) {
-        throw new Error("Cannot retreive an account. Please refresh the browser.")
+        throw new Error(
+          'Cannot retreive an account. Please refresh the browser.'
+        )
       }
       return account
     }
@@ -22,17 +23,15 @@ export const handler = (web3, provider) => () => {
 
   useEffect(() => {
     const mutator = accounts => mutate(accounts[0] ?? null)
-    provider?.on("accountsChanged", mutator)
+    provider?.on('accountsChanged', mutator)
     return () => {
-      provider?.removeListener("accountsChanged", mutator)
+      provider?.removeListener('accountsChanged', mutator)
     }
   }, [provider])
 
   return {
     data,
-    isAdmin: (
-      data &&
-      adminAddresses[web3.utils.keccak256(data)]) ?? false,
+    isAdmin: (data && adminAddresses[web3.utils.keccak256(data)]) ?? false,
     mutate,
     ...rest
   }

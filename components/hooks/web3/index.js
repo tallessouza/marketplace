@@ -1,12 +1,12 @@
-import { useHooks } from "@components/providers/web3"
-import { useEffect } from "react"
-import { useWeb3 } from "@components/providers"
-import { useRouter } from "next/router"
+import { useHooks } from '@components/providers/web3'
+import { useEffect } from 'react'
+import { useWeb3 } from '@components/providers'
+import { useRouter } from 'next/router'
 
 const _isEmpty = data => {
   return (
     data == null ||
-    data === "" ||
+    data === '' ||
     (Array.isArray(data) && data.length === 0) ||
     (data.constructor === Object && Object.keys(data).length === 0)
   )
@@ -37,17 +37,17 @@ export const useAccount = () => {
   }
 }
 
-export const useAdmin = ({redirectTo}) => {
+export const useAdmin = ({ redirectTo }) => {
   const { account } = useAccount()
   const { requireInstall } = useWeb3()
   const router = useRouter()
 
   useEffect(() => {
-    if ((
+    if (
       requireInstall ||
-      account.hasInitialResponse && !account.isAdmin) ||
-      account.isEmpty) {
-
+      (account.hasInitialResponse && !account.isAdmin) ||
+      account.isEmpty
+    ) {
       router.push(redirectTo)
     }
   }, [account])
@@ -72,7 +72,9 @@ export const useOwnedCourse = (...args) => {
 }
 
 export const useManagedCourses = (...args) => {
-  const swrRes = enhanceHook(useHooks(hooks => hooks.useManagedCourses)(...args))
+  const swrRes = enhanceHook(
+    useHooks(hooks => hooks.useManagedCourses)(...args)
+  )
 
   return {
     managedCourses: swrRes
@@ -83,8 +85,7 @@ export const useWalletInfo = () => {
   const { account } = useAccount()
   const { network } = useNetwork()
   const isConnecting =
-  !account.hasInitialResponse &&
-  !network.hasInitialResponse
+    !account.hasInitialResponse && !network.hasInitialResponse
 
   return {
     isConnecting,
