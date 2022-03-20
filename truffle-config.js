@@ -60,9 +60,9 @@ module.exports = {
         }),
       network_id: '3',
       gas: 5500000,
-      gasPrice: 20000000000,
+      gasPrice: 40000000000,
       confirmations: 2,
-      timeoutBlocks: 200
+      timeoutBlocks: 5000
     }
     // Another network with more advanced options...
     // advanced: {
@@ -132,3 +132,16 @@ module.exports = {
   // }
   // }
 }
+// ⠋ Blocks: 0            Seconds: 0   > transaction hash:    0x82fef65b763f34246085c65ba3f241d551c1ee51f8eb76303c67d4e5e316e602
+// ⠼ Blocks: 0            Seconds: 0undefined
+// ⠹ Blocks: 0            Seconds: 5undefined
+// > Blocks: 1            Seconds: 9
+// > contract address:    0x5DFBb97f577874e05b239E76f9D842915151f444
+// > block number:        12109613
+// > block timestamp:     1647746499
+// > account:             0x580fEe22cdecbec880374f0042f92aD6Ec31edEa
+// > balance:             0.920695402749685
+// > gas used:            1389270 (0x1532d6)
+// > gas price:           40 gwei
+// > value sent:          0 ETH
+// > total cost:          0.0555708 ETH
