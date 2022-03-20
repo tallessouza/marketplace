@@ -35,6 +35,7 @@ const VerificationInput = ({ onVerify }) => {
 export default function ManagedCourses() {
   const [proofedOwnership, setProofedOwnership] = useState({})
   const [searchedCourse, setSearchedCourse] = useState(null)
+  const [filters, setFilters] = useState({ state: 'all' })
   const { web3, contract } = useWeb3()
   const { account } = useAdmin({ redirectTo: '/marketplace' })
   const { managedCourses } = useManagedCourses(account)
@@ -76,9 +77,9 @@ export default function ManagedCourses() {
   }
 
   const searchCourse = async hash => {
-    const regex = /[0-9A-Fa-f]{6}/g
+    const re = /[0-9A-Fa-f]{6}/g
 
-    if (hash && hash.length === 66 && regex.test(hash)) {
+    if (hash && hash.length === 66 && re.test(hash)) {
       const course = await contract.methods.getCourseByHash(hash).call()
 
       if (course.owner !== '0x0000000000000000000000000000000000000000') {
@@ -134,10 +135,23 @@ export default function ManagedCourses() {
     return null
   }
 
+  const filteredCourses = managedCourses.data
+    ?.filter(course => {
+      if (filters.state === 'all') {
+        return true
+      }
+
+      return course.state === filters.state
+    })
+    .map(course => renderCard(course))
+
   return (
     <>
       <MarketHeader />
-      <CourseFilter onSearchSubmit={searchCourse} />
+      <CourseFilter
+        onFilterSelect={value => setFilters({ state: value })}
+        onSearchSubmit={searchCourse}
+      />
       <section className="grid grid-cols-1">
         {searchedCourse && (
           <div>
@@ -146,7 +160,10 @@ export default function ManagedCourses() {
           </div>
         )}
         <h1 className="text-2xl font-bold p-5">All Courses</h1>
-        {managedCourses.data?.map(course => renderCard(course))}
+        {filteredCourses}
+        {filteredCourses?.length === 0 && (
+          <Message type="warning">No courses to display</Message>
+        )}
       </section>
     </>
   )
