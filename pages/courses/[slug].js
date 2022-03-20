@@ -10,7 +10,6 @@ export default function Course({ course }) {
   const { isLoading } = useWeb3()
   const { ownedCourse } = useOwnedCourse(course, account.data)
   const courseState = ownedCourse.data?.state
-  debugger
   const isLocked =
     !courseState || courseState === 'purchased' || courseState === 'deactivated'
 
